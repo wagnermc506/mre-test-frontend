@@ -1,6 +1,7 @@
 import { useId, useState, type FormEvent } from 'react'
 import { useCepSearch } from '../../hooks/useCepSearch'
 import { formatCep } from '../../utils/cep'
+import './CepSearchForm.css'
 
 export function CepSearchForm() {
   const [cepInput, setCepInput] = useState('')

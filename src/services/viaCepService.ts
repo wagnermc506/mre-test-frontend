@@ -1,5 +1,5 @@
 import type { CepAddress, CepErrorResponse } from "../types/cep";
-import { viaCepClient } from "./httpClient";
+import { viaCepClient } from "./viaCephttpClient";
 
 export class CepNotFoundError extends Error {
   constructor(cep: string) {

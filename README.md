@@ -1,75 +1,68 @@
-# React + TypeScript + Vite
+## Descrição
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend desenvolvido em [React](https://react.dev/) + TypeScript + [Vite](https://vite.dev/) para o teste técnico do processo seletivo do Itamaraty. Consome a API pública [ViaCEP](https://viacep.com.br/) para busca de endereços por CEP e o CRUD de **Notícias** exposto pelo backend ([`mre-test-backend`](../mre-test-backend)), com paginação, roteamento entre as duas telas, testes em estilo BDD (Gherkin) e ambiente containerizado com Docker.
 
-Currently, two official plugins are available:
+**Stack:** React · TypeScript · Vite · React Router · Axios · CSS puro · Vitest · Testing Library · vitest-cucumber · msw · Docker
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Pré-requisitos
 
-## React Compiler
+- [Node.js](https://nodejs.org/) 24+ e [Yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/) e Docker Compose (`docker compose`) — necessário só para rodar via container
+- Backend rodando em `http://localhost:3000` para a tela de **Notícias** funcionar — veja o README do [`mre-test-backend`](../mre-test-backend/README.md). A tela de **Busca de CEP** não depende do backend, só da API pública do ViaCEP.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Configuração
 
-## Expanding the ESLint configuration
+1. Copie o arquivo de variáveis de ambiente de exemplo:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+   ```bash
+   cp .env.example .env
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+2. Ajuste os valores em .env se necessário:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Variável              | Padrão                   | Descrição                          |
+|-----------------------|--------------------------|------------------------------------|
+| VITE_VIACEP_URL       | https://viacep.com.br/ws | Base da API do ViaCEP              |
+| VITE_NOTICIAS_API_URL | http://localhost:3000    | Base da API do backend de Notícias |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Ambas têm fallback no código caso a variável não esteja definida, então o .env é opcional para rodar com os valores padrão.
 
-```
+Executando localmente
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. Instale as dependências:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+yarn install
+2. Inicie o servidor de desenvolvimento:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+yarn dev
+3. Acesse http://localhost:5173. A aplicação tem duas rotas:
+  - /cep — busca de endereço por CEP
+  - /noticias — CRUD de notícias (precisa do backend rodando em http://localhost:3000)
 
-```
+Executando com Docker
+
+O Dockerfile/docker-compose.yaml atuais sobem a aplicação em modo de desenvolvimento, com hot reload (o código do host é montado dentro do container via volume).
+
+docker compose up --build
+
+Acesse http://localhost:5173 normalmente. Alterações nos arquivos do host refletem no container em tempo real, assim como rodando yarn dev fora do Docker.
+
+▎ Um build de produção containerizado (multi-stage, servindo os arquivos estáticos via Nginx) será adicionado depois, junto com o restante do setup de produção.
+
+Testes
+
+# roda a suíte uma vez
+yarn test
+
+# modo watch
+yarn test:watch
+
+O teste da busca de CEP segue metodologia BDD: o comportamento é especificado em Gherkin em src/components/CepSearchForm/CepSearchForm.feature (cenários de sucesso, CEP inexistente, formato inválido e falha de conexão), executado via vitest-cucumber com os steps implementados em CepSearchForm.steps.test.tsx. As chamadas ao ViaCEP são mockadas com msw, sem dependência de rede real durante os testes.
+
+Build de produção
+
+yarn build     # gera os arquivos estáticos em dist/
+yarn preview   # serve o build gerado localmente, para conferência
+
+Lint
+
+yarn lint

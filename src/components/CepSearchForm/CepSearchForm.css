@@ -60,7 +60,9 @@
   background: var(--bg);
   color: var(--text-h);
   box-sizing: border-box;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
   &::placeholder {
     color: var(--text);
@@ -95,7 +97,9 @@
   background: var(--accent);
   cursor: pointer;
   white-space: nowrap;
-  transition: filter 0.2s, border-color 0.2s;
+  transition:
+    filter 0.2s,
+    border-color 0.2s;
 
   &:hover:not(:disabled) {
     filter: brightness(1.08);

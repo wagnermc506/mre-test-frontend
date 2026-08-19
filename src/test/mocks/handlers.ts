@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw';
 
 export const handlers = [
   http.get('https://viacep.com.br/ws/01001000/json/', () => {
@@ -16,10 +16,10 @@ export const handlers = [
       gia: '1004',
       ddd: '11',
       siafi: '7107',
-    })
+    });
   }),
 
   http.get('https://viacep.com.br/ws/99999999/json/', () => {
-    return HttpResponse.json({ erro: true })
+    return HttpResponse.json({ erro: true });
   }),
-]
+];

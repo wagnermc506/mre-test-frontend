@@ -1,16 +1,16 @@
-import './Pagination.css'
+import './Pagination.css';
 
 interface PaginationProps {
-  page: number
-  totalPages: number
-  totalItems: number
-  pageSize: number
-  isLoading: boolean
-  onPageChange: (page: number) => void
-  onPageSizeChange: (size: number) => void
+  page: number;
+  totalPages: number;
+  totalItems: number;
+  pageSize: number;
+  isLoading: boolean;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (size: number) => void;
 }
 
-const PAGE_SIZE_OPTIONS = [5, 10, 20]
+const PAGE_SIZE_OPTIONS = [5, 10, 20];
 
 export function Pagination({
   page,
@@ -59,5 +59,5 @@ export function Pagination({
         </label>
       </div>
     </nav>
-  )
+  );
 }

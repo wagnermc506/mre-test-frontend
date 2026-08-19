@@ -1,23 +1,23 @@
-import axios from 'axios'
+import axios from 'axios';
 
 interface NestErrorBody {
-  message?: string | string[]
+  message?: string | string[];
 }
 
 export function extractErrorMessage(error: unknown, fallback: string): string {
   if (axios.isAxiosError<NestErrorBody>(error)) {
     if (!error.response) {
-      return 'Não foi possível conectar ao servidor. Verifique se a API está rodando.'
+      return 'Não foi possível conectar ao servidor. Verifique se a API está rodando.';
     }
 
-    const backendMessage = error.response.data?.message
+    const backendMessage = error.response.data?.message;
     if (Array.isArray(backendMessage)) {
-      return backendMessage.join(' ')
+      return backendMessage.join(' ');
     }
     if (typeof backendMessage === 'string') {
-      return backendMessage
+      return backendMessage;
     }
   }
 
-  return fallback
+  return fallback;
 }

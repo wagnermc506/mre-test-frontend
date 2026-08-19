@@ -1,16 +1,16 @@
-import { useEffect, useState, type FormEvent } from 'react'
-import type { Noticia, NoticiaInput } from '../../types/noticia'
-import { extractErrorMessage } from '../../utils/httpError'
-import './Noticias.css'
+import { useState, type FormEvent } from 'react';
+import type { Noticia, NoticiaInput } from '../../types/noticia';
+import { extractErrorMessage } from '../../utils/httpError';
+import './Noticias.css';
 
 interface NoticiaFormProps {
-  editingNoticia: Noticia | null
-  onCreate: (input: NoticiaInput) => Promise<void>
-  onUpdate: (id: string, input: NoticiaInput) => Promise<void>
-  onCancelEdit: () => void
+  editingNoticia: Noticia | null;
+  onCreate: (input: NoticiaInput) => Promise<void>;
+  onUpdate: (id: string, input: NoticiaInput) => Promise<void>;
+  onCancelEdit: () => void;
 }
 
-const EMPTY_FORM: NoticiaInput = { titulo: '', descricao: '' }
+const EMPTY_FORM: NoticiaInput = { titulo: '', descricao: '' };
 
 export function NoticiaForm({
   editingNoticia,
@@ -18,55 +18,52 @@ export function NoticiaForm({
   onUpdate,
   onCancelEdit,
 }: NoticiaFormProps) {
-  const [form, setForm] = useState<NoticiaInput>(EMPTY_FORM)
-  const [fieldErrors, setFieldErrors] = useState<Partial<NoticiaInput>>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState<string | null>(null)
-
-  useEffect(() => {
-    setForm(
-      editingNoticia
-        ? { titulo: editingNoticia.titulo, descricao: editingNoticia.descricao }
-        : EMPTY_FORM,
-    )
-    setFieldErrors({})
-    setSubmitError(null)
-  }, [editingNoticia])
+  const [form, setForm] = useState<NoticiaInput>(
+    editingNoticia
+      ? { titulo: editingNoticia.titulo, descricao: editingNoticia.descricao }
+      : EMPTY_FORM,
+  );
+  const [fieldErrors, setFieldErrors] = useState<Partial<NoticiaInput>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   function validate(input: NoticiaInput): Partial<NoticiaInput> {
-    const errors: Partial<NoticiaInput> = {}
+    const errors: Partial<NoticiaInput> = {};
     if (input.titulo.trim().length < 3) {
-      errors.titulo = 'O título deve ter ao menos 3 caracteres.'
+      errors.titulo = 'O título deve ter ao menos 3 caracteres.';
     }
     if (input.descricao.trim().length < 10) {
-      errors.descricao = 'A descrição deve ter ao menos 10 caracteres.'
+      errors.descricao = 'A descrição deve ter ao menos 10 caracteres.';
     }
-    return errors
+    return errors;
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const errors = validate(form)
-    setFieldErrors(errors)
-    if (Object.keys(errors).length > 0) return
+    const errors = validate(form);
+    setFieldErrors(errors);
+    if (Object.keys(errors).length > 0) return;
 
-    setIsSubmitting(true)
-    setSubmitError(null)
+    setIsSubmitting(true);
+    setSubmitError(null);
 
     try {
       if (editingNoticia) {
-        await onUpdate(editingNoticia.id, form)
+        await onUpdate(editingNoticia.id, form);
       } else {
-        await onCreate(form)
-        setForm(EMPTY_FORM)
+        await onCreate(form);
+        setForm(EMPTY_FORM);
       }
     } catch (error) {
       setSubmitError(
-        extractErrorMessage(error, 'Não foi possível salvar a notícia. Tente novamente.'),
-      )
+        extractErrorMessage(
+          error,
+          'Não foi possível salvar a notícia. Tente novamente.',
+        ),
+      );
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
@@ -79,11 +76,15 @@ export function NoticiaForm({
         <input
           id="titulo"
           value={form.titulo}
-          onChange={(event) => setForm((prev) => ({ ...prev, titulo: event.target.value }))}
+          onChange={(event) =>
+            setForm((prev) => ({ ...prev, titulo: event.target.value }))
+          }
           disabled={isSubmitting}
           aria-invalid={Boolean(fieldErrors.titulo)}
         />
-        {fieldErrors.titulo && <span className="noticia-form__error">{fieldErrors.titulo}</span>}
+        {fieldErrors.titulo && (
+          <span className="noticia-form__error">{fieldErrors.titulo}</span>
+        )}
       </div>
 
       <div className="noticia-form__field">
@@ -92,7 +93,9 @@ export function NoticiaForm({
           id="descricao"
           rows={4}
           value={form.descricao}
-          onChange={(event) => setForm((prev) => ({ ...prev, descricao: event.target.value }))}
+          onChange={(event) =>
+            setForm((prev) => ({ ...prev, descricao: event.target.value }))
+          }
           disabled={isSubmitting}
           aria-invalid={Boolean(fieldErrors.descricao)}
         />
@@ -109,7 +112,11 @@ export function NoticiaForm({
 
       <div className="noticia-form__actions">
         <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Salvando...' : editingNoticia ? 'Salvar alterações' : 'Adicionar'}
+          {isSubmitting
+            ? 'Salvando...'
+            : editingNoticia
+              ? 'Salvar alterações'
+              : 'Adicionar'}
         </button>
         {editingNoticia && (
           <button
@@ -123,5 +130,5 @@ export function NoticiaForm({
         )}
       </div>
     </form>
-  )
+  );
 }

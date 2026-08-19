@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { useNoticias } from '../../hooks/useNoticias'
-import { NoticiaForm } from './NoticiaForm'
-import { NoticiaList } from './NoticiaList'
-import { Pagination } from '../Pagination/Pagination'
-import type { Noticia } from '../../types/noticia'
-import './Noticias.css'
+import { useState } from 'react';
+import { useNoticias } from '../../hooks/useNoticias';
+import { NoticiaForm } from './NoticiaForm';
+import { NoticiaList } from './NoticiaList';
+import { Pagination } from '../Pagination/Pagination';
+import type { Noticia } from '../../types/noticia';
+import './Noticias.css';
 
 export function NoticiaPage() {
   const {
@@ -20,17 +20,17 @@ export function NoticiaPage() {
     createNoticia,
     updateNoticia,
     removeNoticia,
-  } = useNoticias()
+  } = useNoticias();
 
-  const [editingNoticia, setEditingNoticia] = useState<Noticia | null>(null)
+  const [editingNoticia, setEditingNoticia] = useState<Noticia | null>(null);
 
   async function handleDelete(noticia: Noticia) {
-    const confirmed = window.confirm(`Excluir a notícia "${noticia.titulo}"?`)
-    if (!confirmed) return
+    const confirmed = window.confirm(`Excluir a notícia "${noticia.titulo}"?`);
+    if (!confirmed) return;
 
-    await removeNoticia(noticia.id)
+    await removeNoticia(noticia.id);
     if (editingNoticia?.id === noticia.id) {
-      setEditingNoticia(null)
+      setEditingNoticia(null);
     }
   }
 
@@ -39,11 +39,12 @@ export function NoticiaPage() {
       <h1>Notícias</h1>
 
       <NoticiaForm
+        key={editingNoticia?.id ?? 'new'}
         editingNoticia={editingNoticia}
         onCreate={createNoticia}
         onUpdate={async (id, input) => {
-          await updateNoticia(id, input)
-          setEditingNoticia(null)
+          await updateNoticia(id, input);
+          setEditingNoticia(null);
         }}
         onCancelEdit={() => setEditingNoticia(null)}
       />
@@ -71,5 +72,5 @@ export function NoticiaPage() {
         onPageSizeChange={changePageSize}
       />
     </section>
-  )
+  );
 }

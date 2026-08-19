@@ -17,10 +17,12 @@ Frontend desenvolvido em [React](https://react.dev/) + TypeScript + [Vite](https
    ```bash
    cp .env.example .env
 
+   ```
+
 2. Ajuste os valores em .env se necessário:
 
 | Variável              | Padrão                   | Descrição                          |
-|-----------------------|--------------------------|------------------------------------|
+| --------------------- | ------------------------ | ---------------------------------- |
 | VITE_VIACEP_URL       | https://viacep.com.br/ws | Base da API do ViaCEP              |
 | VITE_NOTICIAS_API_URL | http://localhost:3000    | Base da API do backend de Notícias |
 
@@ -30,13 +32,12 @@ Executando localmente
 
 1. Instale as dependências:
 
-yarn install
-2. Inicie o servidor de desenvolvimento:
+yarn install 2. Inicie o servidor de desenvolvimento:
 
-yarn dev
-3. Acesse http://localhost:5173. A aplicação tem duas rotas:
-  - /cep — busca de endereço por CEP
-  - /noticias — CRUD de notícias (precisa do backend rodando em http://localhost:3000)
+yarn dev 3. Acesse http://localhost:5173. A aplicação tem duas rotas:
+
+- /cep — busca de endereço por CEP
+- /noticias — CRUD de notícias (precisa do backend rodando em http://localhost:3000)
 
 Executando com Docker
 
@@ -51,17 +52,19 @@ Acesse http://localhost:5173 normalmente. Alterações nos arquivos do host refl
 Testes
 
 # roda a suíte uma vez
+
 yarn test
 
 # modo watch
+
 yarn test:watch
 
 O teste da busca de CEP segue metodologia BDD: o comportamento é especificado em Gherkin em src/components/CepSearchForm/CepSearchForm.feature (cenários de sucesso, CEP inexistente, formato inválido e falha de conexão), executado via vitest-cucumber com os steps implementados em CepSearchForm.steps.test.tsx. As chamadas ao ViaCEP são mockadas com msw, sem dependência de rede real durante os testes.
 
 Build de produção
 
-yarn build     # gera os arquivos estáticos em dist/
-yarn preview   # serve o build gerado localmente, para conferência
+yarn build # gera os arquivos estáticos em dist/
+yarn preview # serve o build gerado localmente, para conferência
 
 Lint
 

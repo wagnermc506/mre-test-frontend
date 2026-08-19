@@ -1,20 +1,25 @@
-import type { Noticia } from '../../types/noticia'
-import './Noticias.css'
+import type { Noticia } from '../../types/noticia';
+import './Noticias.css';
 
 interface NoticiaListProps {
-  noticias: Noticia[]
-  isLoading: boolean
-  onEdit: (noticia: Noticia) => void
-  onDelete: (noticia: Noticia) => void
+  noticias: Noticia[];
+  isLoading: boolean;
+  onEdit: (noticia: Noticia) => void;
+  onDelete: (noticia: Noticia) => void;
 }
 
-export function NoticiaList({ noticias, isLoading, onEdit, onDelete }: NoticiaListProps) {
+export function NoticiaList({
+  noticias,
+  isLoading,
+  onEdit,
+  onDelete,
+}: NoticiaListProps) {
   if (isLoading) {
-    return <p className="noticia-list__status">Carregando notícias...</p>
+    return <p className="noticia-list__status">Carregando notícias...</p>;
   }
 
   if (noticias.length === 0) {
-    return <p className="noticia-list__status">Nenhuma notícia cadastrada.</p>
+    return <p className="noticia-list__status">Nenhuma notícia cadastrada.</p>;
   }
 
   return (
@@ -29,12 +34,16 @@ export function NoticiaList({ noticias, isLoading, onEdit, onDelete }: NoticiaLi
             <button type="button" onClick={() => onEdit(noticia)}>
               Editar
             </button>
-            <button type="button" className="danger" onClick={() => onDelete(noticia)}>
+            <button
+              type="button"
+              className="danger"
+              onClick={() => onDelete(noticia)}
+            >
               Excluir
             </button>
           </div>
         </li>
       ))}
     </ul>
-  )
+  );
 }

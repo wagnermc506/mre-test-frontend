@@ -3,7 +3,7 @@ export function onlyDigits(value: string): string {
 }
 
 export function isValidCep(cep: string): boolean {
-  return  /^\d{8}$/.test(onlyDigits(cep));
+  return /^\d{8}$/.test(onlyDigits(cep));
 }
 
 export function formatCep(value: string): string {

@@ -8,6 +8,9 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
+ARG VITE_NOTICIAS_API_URL
+ENV VITE_NOTICIAS_API_URL=$VITE_NOTICIAS_API_URL
+
 RUN yarn build
 
 FROM nginx:alpine AS production
